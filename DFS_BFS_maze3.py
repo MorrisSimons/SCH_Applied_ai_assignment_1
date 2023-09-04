@@ -6,7 +6,7 @@ maze = [
     [1, 0, 0, 0],
     [1, 1, 0, 1],
     [0, 1, 0, 0],
-    [1, 1, 1, 1]
+    [1, 1, 0, 1]
 ]
 
 class DFS:
@@ -69,7 +69,10 @@ class BFS:
                 ):
                     queue.append(next_node)
                     visited.add(next_node)
-
+        if current_node == end:
+            return True
+        else:
+            self.path = []
 
 def save_output_json(maze_output_file_name, maze):
     with open(maze_output_file_name, "w") as maze_output_file:
