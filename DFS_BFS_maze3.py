@@ -1,13 +1,7 @@
 import json
 from collections import deque
 
-#Maze representation
-maze = [
-    [1, 0, 0, 0],
-    [1, 1, 0, 1],
-    [0, 1, 0, 0],
-    [1, 1, 0, 1]
-]
+
 
 class DFS:
     def __init__(self, maze):
@@ -92,6 +86,28 @@ def apply_path_to_maze(maze,path):
     return new_path
 
 def main():
+    #Load the maze
+    try:
+        with open("input.json", "r") as maze_input_file:
+            maze = json.load(maze_input_file)
+    except:
+        print("Error: input.json not found")
+        return
+    #Find start and end values
+    start, end = None, None
+    for index, row in enumerate(maze):
+        for index2, col in enumerate(row):
+            if col == 8:
+                start = (index, index2)
+                maze[index][index2] = 1
+            elif col == 9:
+                end = (index, index2)
+                maze[index][index2] = 1
+    if start == None or end == None:
+        print("Error: start or end not found")
+        return    
+
+    #Ask which algorithm to use
     print("what algoritm do you want to use?")
     print("1. DFS")
     print("2. BFS")
@@ -110,7 +126,7 @@ def main():
                 print(i)
             print("============")
             dfs = DFS(maze)
-            dfs.find_path((0, 0), (3, 3))  # Fix me - add start and end function
+            dfs.find_path(start, end)
             if dfs.path == []:
                 print("No path found")
                 return
@@ -122,7 +138,7 @@ def main():
                 print(i)
             print("============")
             bfs = BFS(maze)
-            bfs.find_path((0, 0), (3, 3))  # Fix me - add start and end function
+            bfs.find_path(start, end)
             if bfs.path == []:
                 print("No path found")
                 return
