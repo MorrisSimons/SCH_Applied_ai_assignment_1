@@ -51,19 +51,16 @@ class BFS:
         queue = deque()
         queue.append(start)
         visited = set()
-
         #Define possible moves up, down, left, right
         moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-
         while queue:
             current_node = queue.popleft()
-            self.path.append(current_node)
+            print(current_node)
+            self.path.append((current_node[1],current_node[0]))
             if current_node == end:
                 break
-
             for move in moves:
                 next_node = (current_node[0] + move[0], current_node[1] + move[1])
-
                 if (
                     0 <= next_node[0] < len(self.maze)
                     and 0 <= next_node[1] < len(self.maze[0])
@@ -73,27 +70,13 @@ class BFS:
                     queue.append(next_node)
                     visited.add(next_node)
 
-        
-
 
 def save_output_json(maze_output_file_name, maze):
     with open(maze_output_file_name, "w") as maze_output_file:
         json.dump(maze, maze_output_file)
     
 
-def apply_path_to_maze_dfs(maze,path):
-    new_path = []
-    #Create the new maze
-    for i in range(len(maze)):
-        new_path.append([])
-        for j in range(len(maze[i])):
-            new_path[i].append(0)
-    #Apply the path to the new maze
-    for node in path:
-        new_path[node[0]][node[1]] = 1
-    return new_path
-
-def apply_path_to_maze_bfs(maze,path):
+def apply_path_to_maze(maze,path):
     new_path = []
     #Create the new maze
     for i in range(len(maze)):
@@ -128,7 +111,7 @@ def main():
             if dfs.path == []:
                 print("No path found")
                 return
-            path = apply_path_to_maze_dfs(maze, dfs.path)
+            path = apply_path_to_maze(maze, dfs.path)
             save_output_json("output.json", path)
         elif choice == 2:
             print("Running BFS on this maze")
@@ -140,10 +123,7 @@ def main():
             if bfs.path == []:
                 print("No path found")
                 return
-            print(bfs.path)
-            print(bfs.path.reverse())
-            input("press enter to continue")
-            path = apply_path_to_maze_bfs(maze, bfs.path.reverse())
+            path = apply_path_to_maze(maze, bfs.path)
             save_output_json("output.json", path)
         else:
             print("Please enter a valid choice")
