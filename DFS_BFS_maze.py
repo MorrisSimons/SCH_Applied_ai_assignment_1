@@ -1,117 +1,183 @@
 import json
-
-def BFS():
-    print("BFS")
-    return
-
+from collections import deque
 
 class DFS:
-    def __init__(self,maze, path) -> None:
+    def __init__(self, maze):
+        """Initialize the maze and visited set"""
         self.maze = maze
-        self.path = path
-        self.queue = []
-        self.visited = []
+        self.visited = set()
+        self.path = []
 
-    def set_path(self, new_path):
-        self.path = new_path
-        return new_path
 
-    def _SUB_DFS_(self, col, row):
-        maze = self.maze
-        for i in self.path:
-            print(i)
-        input("Press Enter to continue...")
-        
-        if col+1 <= len(maze[0]) and row+1 <= len(maze):
-            print(f"col+1:{col+1} <= len({len(maze[0])} row +1: {row+1} <= len({len(maze)}))" )
-            if maze[row][col+1] == 1:
-                # Fix me - set path
-                self.path[row][col+1] = 1
-                print(f"setting this path 1")
-                print(f"row: {row} col: {col}")
-                self._SUB_DFS_(col+1, row)
-            # check if up is a wall
-            elif maze[row-1][col] == 1 and row-1 >= 0:
-                # Fix me - set path
-                self.path[row-1][col] = 1
-                print(f"setting this path 2")
-                print(f"row: {row} col: {col}")
-                self._SUB_DFS_(col, row-1)
-            # check if down is a 
-            elif maze[row+1][col] == 1 and row+1 > len(maze):            
-                # Fix me - set path
-                self.path[row+1][col] = 1
-                print(f"setting this path 3")
-                print(f"row: {row} col: {col}")
-                self._SUB_DFS_(col, row+1)
-            # check if left is a wall
-            elif maze[row][col-1] == 1 and col-1 >= 0:         
-                # Fix me - set path
-                self.path[row][col-1] = 1
-                print(f"setting this path 4")
-                print(f"row: {row} col: {col}")
-                self._SUB_DFS_(col-1, row)
-            else:
-                print("reached end of maze")
-                return
+    def find_path(self, start, end):
+        """Find the path from start to end using DFS"""
+        def dfs_helper(node):
+            #Check if the current position is the goal
+            if node == end:
+                self.path.append(node)
+                return True
+            self.visited.add(node)
+            #Define possible moves up, down, left, right
+            moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+            #Try each possible move
+            for move in moves:
+                next_node = (node[0] + move[0], node[1] + move[1])
+                if (
+                    0 <= next_node[0] < len(self.maze)
+                    and 0 <= next_node[1] < len(self.maze[0])
+                    and self.maze[next_node[0]][next_node[1]] == 1
+                    and next_node not in self.visited
+                ):
+                    if dfs_helper(next_node):
+                        self.path.append(node)
+                        return True
+            return False
+        if dfs_helper(start):
+            self.path.reverse()  #Reverse the path to get it from start to end
+
+
+class BFS:
+    def __init__(self, maze):
+        """Initialize the maze and visited set"""
+        self.maze = maze
+        self.visited = set()
+        self.path = []
+
+
+    def find_path(self, start, end):
+        """Find the shortest path from start to end using BFS"""
+        queue = deque()
+        queue.append(start)
+        visited = set()
+        #Define possible moves up, down, left, right
+        moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        while queue:
+            current_node = queue.popleft()
+            self.path.append((current_node[1],current_node[0]))
+            if current_node == end:
+                break
+            for move in moves:
+                next_node = (current_node[0] + move[0], current_node[1] + move[1])
+                if (
+                    0 <= next_node[0] < len(self.maze)
+                    and 0 <= next_node[1] < len(self.maze[0])
+                    and self.maze[next_node[1]][next_node[0]] == 1
+                    and next_node not in visited
+                ):
+                    queue.append(next_node)
+                    visited.add(next_node)
+        if current_node == end:
+            return True
         else:
-            print("dafuq")
-            return
-    def DFS_main(self,):
-        print("Running Main")
-        # open the maze file
-        
-        for row, items in enumerate(self.maze):
-            for col, item in enumerate(items):
-                if item == 1:
-                    # check if right is a wall
-                    print(col, row)
-                    self.path[row][col] = 1
-                    self._SUB_DFS_(col, row)
-            #print(self.queue)
-            for i in self.path:
-                print(i)
-        return
+            self.path = []
 
-def DFS_setup():
-    print("Running DFS setup")
-    path = [
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
-        ]
-    # file navigation
-    maze_file_name = "input.json"
-    maze_output_file_name = "output.json"
-    with open(maze_file_name, "r") as maze_file:
-        maze = json.load(maze_file)
-        for i in maze:
-            print(i)
-    DFS_OBJ = DFS(maze, path)
-    DFS_OBJ.DFS_main()
-    return
+
+def save_output_json(maze_output_file_name, maze):
+    with open(maze_output_file_name, "w") as maze_output_file:
+        json.dump(maze, maze_output_file)
+    
+
+def apply_path_to_maze(maze,path):
+    new_path = []
+    #Create the new maze
+    for i in range(len(maze)):
+        new_path.append([])
+        for j in range(len(maze[i])):
+            new_path[i].append(0)
+    #Apply the path to the new maze
+    for node in path:
+        new_path[node[0]][node[1]] = 1
+    return new_path
+
 
 def main():
+    """Main function"""
+    #Load the maze
+    try:
+        with open("input.json", "r") as maze_input_file:
+            maze = json.load(maze_input_file)
+    except:
+        print("Error: input.json not found")
+        return
+    #Find start and end values
+    start, end = None, None
+    for index, row in enumerate(maze):
+        for index2, col in enumerate(row):
+            if col == 8:
+                start = (index, index2)
+                maze[index][index2] = 1
+            elif col == 9:
+                end = (index, index2)
+                maze[index][index2] = 1
+    if start == None or end == None:
+        print("Error: start or end not found")
+        return
+    
+    #Ask which algorithm to use
     print("what algoritm do you want to use?")
     print("1. DFS")
     print("2. BFS")
     print("choose by entering 1 or 2")
-    Choice = 0
-    while Choice != 1 or Choice != 2:
+    choice = 0
+    while choice != 1 and choice != 2:
         try:
             print("=====================================")
-            Choice = int(input("Enter your choice: "))
+            choice = int(input("Enter your choice: "))
             print("=====================================")
         except ValueError:
             print("ValueError: Please enter a number")
-        if Choice == 1:
-            DFS_setup()
-        elif Choice == 2:
-            BFS()
+        if choice == 1:
+            print("Running DFS on this maze")
+            for i in maze:
+                print(i)
+            print("============")
+            dfs = DFS(maze)
+            dfs.find_path(start, end)
+            if dfs.path == []:
+                print("No path found")
+                return
+            path = apply_path_to_maze(maze, dfs.path)
+            save_output_json("output.json", path)
+        elif choice == 2:
+            print("Running BFS on this maze")
+            for i in maze:
+                print(i)
+            print("============")
+            bfs = BFS(maze)
+            bfs.find_path(start, end)
+            if bfs.path == []:
+                print("No path found")
+                return
+            path = apply_path_to_maze(maze, bfs.path)
+            save_output_json("output.json", path)
         else:
             print("Please enter a valid choice")
             continue
         break
+    
+    #Display the path
+    try:
+        choice = input("[y/n] to display output: ")
+        if choice == "Y" or choice == "y":
+            for i in path:
+                print(i)
+        else:
+            pass
+    except:
+        print("Error")
+
+    #Ask to run again
+    try:
+        choice = input("[y/n] to run again: ")
+        if choice == "Y" or choice == "y":
+            main()
+        else:
+            print("Exiting")
+            return
+    except:
+        print("Error")
+
 if __name__ == "__main__":
-    DFS_setup()
+    main()
+    
