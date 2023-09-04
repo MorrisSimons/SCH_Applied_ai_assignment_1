@@ -49,8 +49,31 @@ class BFS:
 
     def find_path(self, start, end):
         queue = deque()
-        queue.append([start])
+        queue.append(start)
+        visited = set()
 
+        #Define possible moves up, down, left, right
+        moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+        while queue:
+            current_node = queue.popleft()
+            self.path.append(current_node)
+            if current_node == end:
+                break
+
+            for move in moves:
+                next_node = (current_node[0] + move[0], current_node[1] + move[1])
+
+                if (
+                    0 <= next_node[0] < len(self.maze)
+                    and 0 <= next_node[1] < len(self.maze[0])
+                    and self.maze[next_node[0]][next_node[1]] != 1
+                    and next_node not in visited
+                ):
+                    queue.append(next_node)
+                    visited.add(next_node)
+
+        
 
 
 def save_output_json(maze_output_file_name, maze):
@@ -58,7 +81,7 @@ def save_output_json(maze_output_file_name, maze):
         json.dump(maze, maze_output_file)
     
 
-def apply_path_to_maze(maze,path):
+def apply_path_to_maze_dfs(maze,path):
     new_path = []
     #Create the new maze
     for i in range(len(maze)):
@@ -70,6 +93,17 @@ def apply_path_to_maze(maze,path):
         new_path[node[0]][node[1]] = 1
     return new_path
 
+def apply_path_to_maze_bfs(maze,path):
+    new_path = []
+    #Create the new maze
+    for i in range(len(maze)):
+        new_path.append([])
+        for j in range(len(maze[i])):
+            new_path[i].append(0)
+    #Apply the path to the new maze
+    for node in path:
+        new_path[node[0]][node[1]] = 1
+    return new_path
 
 def main():
     print("what algoritm do you want to use?")
@@ -94,12 +128,23 @@ def main():
             if dfs.path == []:
                 print("No path found")
                 return
-            path = apply_path_to_maze(maze, dfs.path)
+            path = apply_path_to_maze_dfs(maze, dfs.path)
             save_output_json("output.json", path)
         elif choice == 2:
+            print("Running BFS on this maze")
+            for i in maze:
+                print(i)
+            print("============")
             bfs = BFS(maze)
             bfs.find_path((0, 0), (3, 3))  # Fix me - add start and end function
-            save_output_json("output.json", apply_path_to_maze(maze, bfs.path))
+            if bfs.path == []:
+                print("No path found")
+                return
+            print(bfs.path)
+            print(bfs.path.reverse())
+            input("press enter to continue")
+            path = apply_path_to_maze_bfs(maze, bfs.path.reverse())
+            save_output_json("output.json", path)
         else:
             print("Please enter a valid choice")
             continue
