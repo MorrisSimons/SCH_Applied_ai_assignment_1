@@ -127,6 +127,8 @@ def main():
             print("=====================================")
         except ValueError:
             print("ValueError: Please enter a number")
+
+        #DFS option
         if choice == 1:
             print("Running DFS on this maze")
             for i in maze:
@@ -139,6 +141,8 @@ def main():
                 return
             path = apply_path_to_maze(maze, dfs.path)
             save_output_json("output.json", path)
+
+        #BFS option
         elif choice == 2:
             print("Running BFS on this maze")
             for i in maze:
@@ -151,6 +155,8 @@ def main():
                 return
             path = apply_path_to_maze(maze, bfs.path)
             save_output_json("output.json", path)
+
+        #Else Option
         else:
             print("Please enter a valid choice")
             continue
