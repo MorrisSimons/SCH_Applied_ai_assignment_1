@@ -18,17 +18,17 @@ class DFS:
                 return True
             self.visited.add(node)
             #Define possible moves up, down, left, right
-            moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+            moves = [(0, 1), (0, -1), (1, 0), (-1, 0)] # optional moves with order
 
             #Try each possible move
             for move in moves:
-                next_node = (node[0] + move[0], node[1] + move[1])
+                next_node = (node[0] + move[0], node[1] + move[1]) #apply move to node
                 if (
                     0 <= next_node[0] < len(self.maze)
                     and 0 <= next_node[1] < len(self.maze[0])
                     and self.maze[next_node[0]][next_node[1]] == 1
                     and next_node not in self.visited
-                ):
+                ): # condition to find next 1
                     if dfs_helper(next_node):
                         self.path.append(node)
                         return True
@@ -53,20 +53,20 @@ class BFS:
         #Define possible moves up, down, left, right
         moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         while queue:
-            current_node = queue.popleft()
-            self.path.append((current_node[1],current_node[0]))
+            current_node = queue.popleft() # take next node from queue
+            self.path.append((current_node[1],current_node[0])) #add this node to path
             if current_node == end:
-                break
+                break # Goal found
             for move in moves:
-                next_node = (current_node[0] + move[0], current_node[1] + move[1])
+                next_node = (current_node[0] + move[0], current_node[1] + move[1]) #apply moves to node
                 if (
                     0 <= next_node[0] < len(self.maze)
                     and 0 <= next_node[1] < len(self.maze[0])
                     and self.maze[next_node[1]][next_node[0]] == 1
                     and next_node not in visited
-                ):
-                    queue.append(next_node)
-                    visited.add(next_node)
+                ): # conditions to find the next 1 to move to
+                    queue.append(next_node) # add to queue
+                    visited.add(next_node) # mark as visited
         if current_node == end:
             return True
         else:
@@ -80,11 +80,12 @@ def save_output_json(maze_output_file_name, maze):
 
 def apply_path_to_maze(maze,path):
     new_path = []
-    #Create the new maze
+    #Create a new maze
     for i in range(len(maze)):
         new_path.append([])
         for j in range(len(maze[i])):
             new_path[i].append(0)
+    
     #Apply the path to the new maze
     for node in path:
         new_path[node[0]][node[1]] = 1
@@ -100,6 +101,7 @@ def main():
     except:
         print("Error: input.json not found")
         return
+
     #Find start and end values
     start, end = None, None
     for index, row in enumerate(maze):
@@ -162,7 +164,7 @@ def main():
             continue
         break
     
-    #Display the path
+    #Display the path option 
     try:
         choice = input("[y/n] to display output: ")
         if choice == "Y" or choice == "y":
@@ -173,7 +175,7 @@ def main():
     except:
         print("Error")
 
-    #Ask to run again
+    #Ask to run again option
     try:
         choice = input("[y/n] to run again: ")
         if choice == "Y" or choice == "y":
