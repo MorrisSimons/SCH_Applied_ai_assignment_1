@@ -55,7 +55,7 @@ class BFS:
         moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         while queue:
             current_node = queue.popleft()
-            print(current_node)
+            #print(current_node)
             self.path.append((current_node[1],current_node[0]))
             if current_node == end:
                 break
@@ -64,7 +64,7 @@ class BFS:
                 if (
                     0 <= next_node[0] < len(self.maze)
                     and 0 <= next_node[1] < len(self.maze[0])
-                    and self.maze[next_node[0]][next_node[1]] != 1
+                    and self.maze[next_node[1]][next_node[0]] == 1
                     and next_node not in visited
                 ):
                     queue.append(next_node)
