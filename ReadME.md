@@ -15,6 +15,9 @@ In the BFS approach, the algorithm was allowed to explore the maze much like the
 ### DFS
 For the DFS implementation, a right-first rule was adopted, meaning the algorithm would prioritize moving right, then up, left, and finally down. This approach aimed to explore deeper into the maze before backtracking.
 
+### Conclusion
+The conclusion is that in this manual case DFS proved to be faster than BFS, This is not always true in all cases that DFS is faster sometimes DFS can get lost and go of track when going in to deep. While BFS is exploring more path ways. There are also other advantages like DFS require less memory and BFS require more memory. But to put it in an easy way BFS are good when the target is close and dfs are optimal when the target is far away and when you need speed and don't have alot of memory
+
 ![image](https://github.com/MorrisSimons/SCH_Applied_ai_assignment_1/assets/38280463/01cff01a-98d3-4a97-a439-50b08d10938a)
 
 
