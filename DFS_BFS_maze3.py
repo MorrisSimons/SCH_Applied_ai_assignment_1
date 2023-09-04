@@ -1,7 +1,7 @@
 import json
 from collections import deque
 
-# Maze representation
+#Maze representation
 maze = [
     [1, 0, 0, 0],
     [1, 1, 0, 1],
@@ -17,15 +17,15 @@ class DFS:
 
     def find_path(self, start, end):
         def dfs_helper(node):
-            # Check if the current position is the goal
+            #Check if the current position is the goal
             if node == end:
                 self.path.append(node)
                 return True
             self.visited.add(node)
-            # Define possible moves up, down, left, right
+            #Define possible moves up, down, left, right
             moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
 
-            # Try each possible move
+            #Try each possible move
             for move in moves:
                 next_node = (node[0] + move[0], node[1] + move[1])
                 if (
@@ -39,7 +39,7 @@ class DFS:
                         return True
             return False
         if dfs_helper(start):
-            self.path.reverse()  # Reverse the path to get it from start to end
+            self.path.reverse()  #Reverse the path to get it from start to end
 
 class BFS:
     def __init__(self, maze):
@@ -105,7 +105,7 @@ def main():
             continue
         break
     
-    # Display the path
+    #Display the path
     try:
         choice = input("[y/n] to display output: ")
         if choice == "Y" or choice == "y":
@@ -116,7 +116,7 @@ def main():
     except:
         print("Error")
 
-    # Ask to run again
+    #Ask to run again
     try:
         choice = input("[y/n] to run again: ")
         if choice == "Y" or choice == "y":
