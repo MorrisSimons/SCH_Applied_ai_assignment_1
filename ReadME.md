@@ -3,7 +3,7 @@
 ## Introduction
 The objective of this project was to implement and compare the performance of two well-known pathfinding algorithms, DFS and BFS, in solving a maze. The maze, depicted in Figure 1, serves as the testing ground for these algorithms. The "8" represents the starting point, the "9" represents the goal, "1" denotes accessible paths, and "0" indicates roadblocks.
 
-![image](https://github.com/MorrisSimons/SCH_Applied_ai_assignment_1/assets/38280463/09718d6d-8a28-460c-b749-ae97cb76d388)
+![image](https://github.com/MorrisSimons/SCH_Applied_ai_assignment_1/assets/38280463/06ad1eef-711c-4764-9e48-849ebc77425f)
 
 
 
@@ -22,7 +22,7 @@ Furthermore, it is worth noting that these algorithms come with distinct memory 
 
 To simplify the selection between DFS and BFS, it can be summarized as follows: BFS is particularly effective when the target is nearby, as it systematically explores all potential paths. On the other hand, DFS shines when the target is distant, prioritizing speed over memory efficiency in situations where ample memory resources are available.
 
-![image](https://github.com/MorrisSimons/SCH_Applied_ai_assignment_1/assets/38280463/01cff01a-98d3-4a97-a439-50b08d10938a)
+![ai uppgift 1](https://github.com/MorrisSimons/SCH_Applied_ai_assignment_1/assets/38280463/67b69dd1-99ed-43f8-a767-74a5a4a78cab)
 
 
 ## Task 2 Implementation Details
@@ -33,7 +33,8 @@ Initially, a menu structure was developed to facilitate interaction with the alg
 ### BFS (Breadth-First Search)
 Following the completion of the DFS implementation, work on the BFS algorithm commenced. The familiarity gained from working with DFS expedited the development of the BFS solution. Similar conditions for movement, cell traversal, and path tracking were employed. Instead of utilizing a stack, as done in DFS, a queue-based approach was used in BFS. Several iterations were undertaken to rectify mirroring issues, ultimately leading to the successful generation of desired mazes.
 
-![Untitled](https://github.com/MorrisSimons/SCH_Applied_ai_assignment_1/assets/38280463/2ccebcb2-0509-493e-b66b-b4644cf93ad9)
+![Untitled](https://github.com/MorrisSimons/SCH_Applied_ai_assignment_1/assets/38280463/242d5854-ffd5-4209-87e5-bab0eaa96be0)
+
 
 ### Conclusion 
 In conclusion, this project demonstrated the successful implementation of DFS and BFS algorithms for maze solving. The code was designed to be concise and efficient, but there remain opportunities for further enhancement. Future improvements include:
